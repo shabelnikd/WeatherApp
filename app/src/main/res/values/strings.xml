@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="text_fragment_weather_today">Сегодня</string>
+    <string name="content_description_icon_calendar">icon_calendar</string>
+    <string name="text_fragment_weather_next_forecast">Будущий прогноз</string>
+    <string name="content_description_notification_icon">notification icon</string>
+    <string name="content_description_current_weather_icon">current weather icon</string>
+</resources>

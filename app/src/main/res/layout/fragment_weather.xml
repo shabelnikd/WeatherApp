@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_weather_second"
+    tools:context=".ui.fragments.WeatherFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clTopBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="40dp"
+            android:paddingTop="20dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/currentCityState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_geo"
+                android:drawableEnd="@drawable/ic_options"
+                android:drawablePadding="12dp"
+                android:elegantTextHeight="true"
+                android:fontFamily="@font/sf_pro_display_semibold"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Bishkek" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/content_description_notification_icon"
+                android:src="@drawable/ic_notification"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/imageIcon"
+            android:layout_width="300dp"
+            android:layout_height="210dp"
+            android:contentDescription="@string/content_description_current_weather_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clTopBar"
+            tools:src="@drawable/image_sun_cloud" />
+
+        <LinearLayout
+            android:id="@+id/currentWeatherTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageIcon"
+            >
+
+
+            <TextView
+                android:id="@+id/tvCurrentWeatherTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_display_semibold"
+                android:textColor="@color/white"
+                android:textSize="64sp"
+                tools:text="30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_display_semibold"
+                android:textColor="@color/white"
+                android:textSize="64sp"
+
+                android:text="°" />
+
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/isPrecipitations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elegantTextHeight="true"
+            android:fontFamily="@font/sf_pro_display_regular"
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/currentWeatherTemp"
+            tools:text="Осадки" />
+
+        <LinearLayout
+            android:id="@+id/lnMinMaxTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/isPrecipitations">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvMaxTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elegantTextHeight="true"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:textColor="@color/white"
+                    android:textFontWeight="400"
+                    android:textSize="18sp"
+                    tools:text="Макс.: 31" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:elegantTextHeight="true"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:textColor="@color/white"
+                    android:textFontWeight="400"
+                    android:textSize="18sp"
+                    android:text="°" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                >
+
+                <TextView
+                    android:id="@+id/tvMinTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elegantTextHeight="true"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:textColor="@color/white"
+                    android:textFontWeight="400"
+                    android:textSize="18sp"
+                    tools:text="Мин.: 28" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elegantTextHeight="true"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:textColor="@color/white"
+                    android:textFontWeight="400"
+                    android:textSize="18sp"
+                    android:text="°" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBaseInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+
+            android:outlineSpotShadowColor="@android:color/transparent"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            app:cardBackgroundColor="#30001026"
+            app:cardCornerRadius="20dp"
+            app:contentPaddingBottom="12dp"
+            app:contentPaddingTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/lnMinMaxTemp">
+
+            <TextView
+                android:id="@+id/tvPrecipitationsProbability"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:layout_marginStart="16dp"
+                android:drawablePadding="5dp"
+                android:elegantTextHeight="true"
+                android:fontFamily="@font/sf_pro_display_semibold"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/ic_rain"
+                tools:text="0 мм" />
+
+            <TextView
+                android:id="@+id/tvHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:drawablePadding="5dp"
+                android:elegantTextHeight="true"
+                android:fontFamily="@font/sf_pro_display_semibold"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/ic_humidity"
+                tools:text="67%" />
+
+            <TextView
+                android:id="@+id/tvWind"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="12dp"
+                android:drawablePadding="5dp"
+                android:fontFamily="@font/sf_pro_display_semibold"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/ic_wind"
+                tools:text="25 км/ч" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardTodayInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            android:outlineSpotShadowColor="@android:color/transparent"
+            app:cardBackgroundColor="#30001026"
+            app:cardCornerRadius="20dp"
+            app:contentPaddingBottom="12dp"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            app:contentPaddingTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/cardBaseInfo">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/sf_pro_display_bold"
+                    android:shadowColor="#20000000"
+                    android:shadowDx="-10"
+                    android:shadowDy="10"
+                    android:shadowRadius="1"
+                    android:text="@string/text_fragment_weather_today"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    />
+
+                <TextView
+                    android:id="@+id/currentDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:shadowColor="#20000000"
+                    android:shadowDx="-10"
+                    android:shadowDy="10"
+                    android:shadowRadius="1"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Март, 10"
+
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTodayForecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="14dp"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/currentDate"
+                    tools:listitem="@layout/hour_weather_item"
+
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardNextDayInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="20dp"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:outlineSpotShadowColor="@android:color/transparent"
+            app:cardBackgroundColor="#30001026"
+            app:cardCornerRadius="20dp"
+            app:contentPaddingBottom="12dp"
+            app:contentPaddingTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardTodayInfo">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvNextForecast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/sf_pro_display_bold"
+                    android:shadowColor="#20000000"
+                    android:shadowDx="-10"
+                    android:shadowDy="10"
+                    android:shadowRadius="1"
+                    android:text="@string/text_fragment_weather_next_forecast"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:contentDescription="@string/content_description_icon_calendar"
+                    android:elevation="20dp"
+                    android:paddingVertical="4dp"
+                    android:src="@drawable/ic_calendar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvNextForecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="14dp"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/tvNextForecast"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/day_weather_item" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+
+        <LinearLayout
+            android:id="@+id/loaderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#80000000">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
