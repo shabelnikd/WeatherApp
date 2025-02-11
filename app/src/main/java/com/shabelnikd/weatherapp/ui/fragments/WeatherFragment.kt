@@ -1,11 +1,14 @@
 package com.shabelnikd.weatherapp.ui.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.shabelnikd.weatherapp.R
@@ -29,6 +32,8 @@ class WeatherFragment : Fragment() {
     private val dayAdapter = DayItemAdapter()
     private val hourAdapter = HourItemAdapter()
 
+    private var sharedPreferences: SharedPreferences? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,17 +44,27 @@ class WeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadData()
+
         initialize()
+        sharedPreferences = context?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
+        sharedPreferences?.let {
+            val currentLocation = sharedPreferences?.getInt("currentLocation", LocationKeysEnum.BISHKEK.locationKey)
 
+            val selectedLocation = LocationKeysEnum.entries.find { it.locationKey == currentLocation }
+            binding.currentCityState.text = selectedLocation?.russianName
 
+            loadData(currentLocation)
+            popupInit()
+        }
     }
 
-    private fun loadData() {
-        viewModel.getCurrentWeather(LocationKeysEnum.BISHKEK.locationKey)
-        viewModel.getOneDayWeather(LocationKeysEnum.BISHKEK.locationKey)
-        viewModel.getTwelveHoursWeather(LocationKeysEnum.BISHKEK.locationKey)
-        viewModel.getFiveDaysWeather(LocationKeysEnum.BISHKEK.locationKey)
+    private fun loadData(locationKey: Int?) {
+        locationKey?.let { locationKey ->
+            viewModel.getCurrentWeather(locationKey)
+            viewModel.getOneDayWeather(locationKey)
+            viewModel.getTwelveHoursWeather(locationKey)
+            viewModel.getFiveDaysWeather(locationKey)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -58,9 +73,10 @@ class WeatherFragment : Fragment() {
         binding.rvNextForecast.adapter = dayAdapter
 
         binding.currentDate.text = getCurrentDateFormatted()
-        binding.currentCityState.text = "Бишкек"
 
         viewModel.currentWeather.observe(viewLifecycleOwner) { currentWeather ->
+            binding.loaderLayout.visibility = View.GONE
+
             when (currentWeather.first().isDayTime){
                 true -> binding.root.setBackgroundResource(R.drawable.bg_weather_first)
                 false -> binding.root.setBackgroundResource(R.drawable.bg_weather_second)
@@ -105,6 +121,33 @@ class WeatherFragment : Fragment() {
         viewModel.fiveDaysWeather.observe(viewLifecycleOwner) { fiveDays ->
             dayAdapter.submitList(fiveDays.dailyForecasts)
         }
+    }
+
+    private fun popupInit() {
+        binding.currentCityState.setOnClickListener {
+            context?.let { context ->
+                val popup = PopupMenu(context, binding.currentCityState)
+                val menu = popup.menu
+
+                for (location in LocationKeysEnum.entries) {
+                    menu.add(location.russianName)
+                }
+
+                popup.setOnMenuItemClickListener { item ->
+                    val selectedLocation = LocationKeysEnum.entries.find { it.russianName == item.title }
+                    if (selectedLocation != null) {
+                        binding.currentCityState.text = selectedLocation.russianName
+                        sharedPreferences?.edit()?.putInt("currentLocation", selectedLocation.locationKey)
+                            ?.apply()
+                        loadData(selectedLocation.locationKey)
+                    }
+                    true
+                }
+                popup.show()
+            }
+        }
+
+
     }
 
     fun getCurrentDateFormatted(): String {
