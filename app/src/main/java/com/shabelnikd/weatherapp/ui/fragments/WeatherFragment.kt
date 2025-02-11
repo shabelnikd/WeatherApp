@@ -61,6 +61,12 @@ class WeatherFragment : Fragment() {
         binding.currentCityState.text = "Бишкек"
 
         viewModel.currentWeather.observe(viewLifecycleOwner) { currentWeather ->
+            when (currentWeather.first().isDayTime){
+                true -> binding.root.setBackgroundResource(R.drawable.bg_weather_first)
+                false -> binding.root.setBackgroundResource(R.drawable.bg_weather_second)
+                else -> binding.root.setBackgroundResource(R.drawable.bg_weather_second)
+            }
+
             currentWeather.first().apply {
                 binding.tvCurrentWeatherTemp.text = temperature?.metric?.value.toString()
                 binding.isPrecipitations.text = weatherText

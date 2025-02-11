@@ -33,7 +33,7 @@ class HourItemAdapter(
             weatherHour.epochDateTime?.let {
                 binding.tvHourTime.text = formatTimestampToTime(weatherHour.epochDateTime)
             }
-            binding.tvHourIcon.setImageResource(R.drawable.partly_cloudy_day)
+            binding.tvHourIcon.setImageResource(imageResByPhrase(weatherHour.iconPhrase, weatherHour.isDaylight))
         }
 
     }
@@ -42,6 +42,28 @@ class HourItemAdapter(
         val date = Date(timestamp * 1000)
         val format = SimpleDateFormat("HH.mm", Locale.getDefault())
         return format.format(date)
+    }
+
+
+    fun imageResByPhrase(phrase: String?, isDaylight: Boolean?): Int{
+        if (isDaylight == true) {
+            return when {
+                phrase?.contains("ясно") == true -> R.drawable.clear_day
+                phrase?.contains("Преимущественно") == true -> R.drawable.partly_cloudy_day
+                phrase?.contains("облачно") == true -> R.drawable.cloudy
+                else -> R.drawable.clear_day
+            }
+
+        } else {
+            return when {
+                phrase?.contains("ясно") == true -> R.drawable.clear_night
+                phrase?.contains("Преимущественно") == true -> R.drawable.partly_cloudy_night
+                phrase?.contains("облачно") == true -> R.drawable.cloudy
+                else -> R.drawable.clear_night
+            }
+
+        }
+
     }
 
     class ViewHolder(val binding: HourWeatherItemBinding) : RecyclerView.ViewHolder(binding.root)

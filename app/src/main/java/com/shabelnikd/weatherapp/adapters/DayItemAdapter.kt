@@ -33,7 +33,7 @@ class DayItemAdapter(
                 binding.tvWeekDay.text = formatTimestampToDayOfWeek(weatherDay.epochDate).replaceFirstChar { it.uppercase() }
             }
 
-            binding.tvDayIcon.setImageResource(R.drawable.partly_cloudy_day)
+            binding.tvDayIcon.setImageResource(imageResByPhrase(weatherDay.day?.iconPhrase))
             binding.tvDayMaxTemp.text = weatherDay.temperature?.maximum?.value.toString()
             binding.tvDayMinTemp.text = weatherDay.temperature?.minimum?.value.toString()
         }
@@ -44,6 +44,17 @@ class DayItemAdapter(
         val date = Date(timestamp * 1000)
         val format = SimpleDateFormat("EEEE", Locale("ru"))
         return format.format(date)
+    }
+
+
+    fun imageResByPhrase(phrase: String?): Int{
+        return when {
+            phrase?.contains("ясно") == true -> R.drawable.clear_day
+            phrase?.contains("Преимущественно") == true -> R.drawable.partly_cloudy_day
+            phrase?.contains("облачно") == true -> R.drawable.cloudy
+            else -> R.drawable.image_sun_cloud
+        }
+
     }
 
     class ViewHolder(val binding: DayWeatherItemBinding) : RecyclerView.ViewHolder(binding.root)

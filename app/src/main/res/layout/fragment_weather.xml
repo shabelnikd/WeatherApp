@@ -392,6 +392,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:orientation="vertical"
             android:gravity="center"
+            android:visibility="gone"
             android:background="#80000000">
 
             <ProgressBar
