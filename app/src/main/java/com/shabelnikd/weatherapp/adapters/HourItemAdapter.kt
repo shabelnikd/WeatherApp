@@ -30,8 +30,11 @@ class HourItemAdapter(
 
         with(holder) {
             binding.tvHourTemp.text = weatherHour.temperature?.value.toString()
-            weatherHour.epochDateTime?.let {
-                binding.tvHourTime.text = formatTimestampToTime(weatherHour.epochDateTime)
+            weatherHour.epochDateTime?.let { epochDateTime ->
+                when {
+                    weatherHour.isSelected -> binding.tvHourTime.text = "Сейчас"
+                    else -> binding.tvHourTime.text = formatTimestampToTime(epochDateTime)
+                }
             }
             binding.tvHourIcon.setImageResource(imageResByPhrase(weatherHour.iconPhrase, weatherHour.isDaylight))
         }

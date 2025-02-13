@@ -49,10 +49,11 @@ class DayItemAdapter(
 
     fun imageResByPhrase(phrase: String?): Int{
         return when {
-            phrase?.contains("ясно") == true -> R.drawable.clear_day
-            phrase?.contains("Преимущественно") == true -> R.drawable.partly_cloudy_day
-            phrase?.contains("облачно") == true -> R.drawable.cloudy
-            else -> R.drawable.image_sun_cloud
+            phrase?.lowercase()?.contains("ясно") == true -> R.drawable.clear_day
+            phrase?.lowercase()?.contains("преимущественно") == true -> R.drawable.partly_cloudy_day
+            phrase?.lowercase()?.contains("облачно") == true -> R.drawable.cloudy
+            phrase?.lowercase()?.contains("cнег") == true -> R.drawable.snow
+            else -> R.drawable.partly_cloudy_day
         }
 
     }

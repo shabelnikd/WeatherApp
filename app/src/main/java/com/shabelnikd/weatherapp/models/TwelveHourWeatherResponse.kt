@@ -6,28 +6,30 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TwelveHourWeatherResponse(
+    var isSelected: Boolean = false,
+    var isSelfCreated: Boolean = false,
     @SerialName("DateTime")
-    val dateTime: String?,
+    val dateTime: String? = null,
     @SerialName("EpochDateTime")
-    val epochDateTime: Long?,
+    val epochDateTime: Long? = null,
     @SerialName("HasPrecipitation")
-    val hasPrecipitation: Boolean?,
+    val hasPrecipitation: Boolean? = null,
     @SerialName("IconPhrase")
-    val iconPhrase: String?,
+    val iconPhrase: String? = null,
     @SerialName("IsDaylight")
-    val isDaylight: Boolean?,
+    val isDaylight: Boolean? = null,
     @SerialName("PrecipitationProbability")
-    val precipitationProbability: Int?,
+    val precipitationProbability: Int? = null,
     @SerialName("Temperature")
-    val temperature: Temperature?,
+    val temperature: Temperature? = null,
 ) {
     @Serializable
     data class Temperature(
         @SerialName("Unit")
-        val unit: String?,
+        val unit: String? = null,
         @SerialName("UnitType")
-        val unitType: Int?,
+        val unitType: Int? = null,
         @SerialName("Value")
-        val value: Double?
+        val value: Double? = null
     )
 }

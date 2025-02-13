@@ -16,8 +16,11 @@ import com.shabelnikd.weatherapp.adapters.DayItemAdapter
 import com.shabelnikd.weatherapp.adapters.HourItemAdapter
 import com.shabelnikd.weatherapp.databinding.FragmentWeatherBinding
 import com.shabelnikd.weatherapp.models.LocationKeysEnum
+import com.shabelnikd.weatherapp.models.TwelveHourWeatherResponse
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
 import java.util.Date
 import java.util.Locale
 
@@ -48,9 +51,11 @@ class WeatherFragment : Fragment() {
         initialize()
         sharedPreferences = context?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
         sharedPreferences?.let {
-            val currentLocation = sharedPreferences?.getInt("currentLocation", LocationKeysEnum.BISHKEK.locationKey)
+            val currentLocation =
+                sharedPreferences?.getInt("currentLocation", LocationKeysEnum.BISHKEK.locationKey)
 
-            val selectedLocation = LocationKeysEnum.entries.find { it.locationKey == currentLocation }
+            val selectedLocation =
+                LocationKeysEnum.entries.find { it.locationKey == currentLocation }
             binding.currentCityState.text = selectedLocation?.russianName
 
             loadData(currentLocation)
@@ -77,7 +82,7 @@ class WeatherFragment : Fragment() {
         viewModel.currentWeather.observe(viewLifecycleOwner) { currentWeather ->
             binding.loaderLayout.visibility = View.GONE
 
-            when (currentWeather.first().isDayTime){
+            when (currentWeather.first().isDayTime) {
                 true -> binding.root.setBackgroundResource(R.drawable.bg_weather_first)
                 false -> binding.root.setBackgroundResource(R.drawable.bg_weather_second)
                 else -> binding.root.setBackgroundResource(R.drawable.bg_weather_second)
@@ -105,7 +110,8 @@ class WeatherFragment : Fragment() {
 
                     if (day?.precipitationProbability != null && night?.precipitationProbability != null) {
                         binding.tvPrecipitationsProbability.text =
-                            day.precipitationProbability.plus(night.precipitationProbability).toString() + "%"
+                            day.precipitationProbability.plus(night.precipitationProbability)
+                                .toString() + "%"
                     }
 
                     binding.tvWind.text = day?.wind?.speed?.value.toString() + " км/ч"
@@ -115,7 +121,35 @@ class WeatherFragment : Fragment() {
         }
 
         viewModel.twelveHoursWeather.observe(viewLifecycleOwner) { twelveHours ->
-            hourAdapter.submitList(twelveHours)
+            fun formatTimestampToTime(timestamp: Long): String {
+                val date = Date(timestamp * 1000)
+                val format = SimpleDateFormat("HH.mm", Locale.getDefault())
+                return format.format(date)
+            }
+
+
+            val currentTime = if ("${LocalDateTime.now().hour}".length == 1) "0${LocalDateTime.now().hour}.00" else "${LocalDateTime.now().hour}.00"
+            viewModel.currentWeather.observe(viewLifecycleOwner) {currentWeather ->
+                val selectedHour = twelveHours.find { formatTimestampToTime(it.epochDateTime!!) == currentTime }
+                    ?: TwelveHourWeatherResponse(
+                        epochDateTime = Instant.now().toEpochMilli(),
+                        temperature = TwelveHourWeatherResponse.Temperature(value = currentWeather.first().temperature?.metric?.value),
+                        isDaylight = viewModel.currentWeather.value?.first()?.isDayTime,
+                        iconPhrase = viewModel.currentWeather.value?.first()?.weatherText,
+                        isSelfCreated = true
+                    )
+
+                selectedHour.isSelected = true
+
+                when (selectedHour.isSelfCreated) {
+                    true -> {
+                        hourAdapter.submitList(listOf(selectedHour) + twelveHours)
+                    }
+                    false -> {
+                        hourAdapter.submitList(twelveHours)
+                    }
+                }
+            }
         }
 
         viewModel.fiveDaysWeather.observe(viewLifecycleOwner) { fiveDays ->
@@ -134,10 +168,12 @@ class WeatherFragment : Fragment() {
                 }
 
                 popup.setOnMenuItemClickListener { item ->
-                    val selectedLocation = LocationKeysEnum.entries.find { it.russianName == item.title }
+                    val selectedLocation =
+                        LocationKeysEnum.entries.find { it.russianName == item.title }
                     if (selectedLocation != null) {
                         binding.currentCityState.text = selectedLocation.russianName
-                        sharedPreferences?.edit()?.putInt("currentLocation", selectedLocation.locationKey)
+                        sharedPreferences?.edit()
+                            ?.putInt("currentLocation", selectedLocation.locationKey)
                             ?.apply()
                         loadData(selectedLocation.locationKey)
                     }
