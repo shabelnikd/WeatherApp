@@ -84,6 +84,7 @@ class RetrofitClient private constructor(context: Context){
 
     }
 
+
     val json = Json {
         ignoreUnknownKeys = true
         isLenient = true

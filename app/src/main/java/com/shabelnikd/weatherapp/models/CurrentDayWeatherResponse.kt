@@ -8,8 +8,6 @@ import kotlinx.serialization.Serializable
 data class CurrentDayWeatherResponse(
     @SerialName("DailyForecasts")
     val dailyForecasts: List<DailyForecast?>?,
-//    @SerialName("Headline")
-//    val headline: Headline?
 ) {
     @Serializable
     data class DailyForecast(

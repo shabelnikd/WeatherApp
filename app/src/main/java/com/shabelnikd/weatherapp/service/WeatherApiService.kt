@@ -9,8 +9,8 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface WeatherApiService {
 
+interface WeatherApiService {
     @GET("/currentconditions/v1/{locationKey}")
     @Headers("Cache-Control: public, max-age=600")
     suspend fun getCurrentWeather(

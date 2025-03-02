@@ -46,7 +46,6 @@ class DayItemAdapter(
         return format.format(date)
     }
 
-
     fun imageResByPhrase(phrase: String?): Int{
         return when {
             phrase?.lowercase()?.contains("ясно") == true -> R.drawable.clear_day

@@ -1,11 +1,12 @@
 package com.shabelnikd.weatherapp.adapters
 
 
+import androidx.recyclerview.widget.DiffUtil
 import com.shabelnikd.weatherapp.models.FiveDaysWeatherResponse
 import com.shabelnikd.weatherapp.models.TwelveHourWeatherResponse
 
 
-class GenericDiffUtil<T: Any> : androidx.recyclerview.widget.DiffUtil.ItemCallback<T>() {
+class GenericDiffUtil<T: Any> : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
         return when {
             oldItem is TwelveHourWeatherResponse && newItem is TwelveHourWeatherResponse -> oldItem.epochDateTime == newItem.epochDateTime

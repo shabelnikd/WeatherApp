@@ -19,7 +19,7 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
     ViewModel() {
 
     private val _currentWeather = MutableLiveData<List<CurrentWeatherResponse>>()
-    val currentWeather: LiveData<List<CurrentWeatherResponse>> = _currentWeather
+    val currentWeather: LiveData<List<CurrentWeatherResponse>> get() = _currentWeather
 
     private val _twelveHoursWeather = MutableLiveData<List<TwelveHourWeatherResponse>>()
     val twelveHoursWeather: LiveData<List<TwelveHourWeatherResponse>> = _twelveHoursWeather
@@ -31,7 +31,6 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
     val currentDayWeather: LiveData<CurrentDayWeatherResponse> = _currentDayWeather
 
     fun <T> responseWrapper(response: Result<T>, postedLiveData: MutableLiveData<T>) {
-
         response.onSuccess { weatherData -> postedLiveData.postValue(weatherData) }
         response.onFailure { exception -> Log.e("ALLD", "Error on ViewModel", exception) }
     }
